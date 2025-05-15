@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEART</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: var(--bg-color, #f0f0f0);
+      transition: background-color 1,5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Button styles */
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: var(--btn-color, #3498db);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Pulse animation for button */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(52, 152, 219, 0.7);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(52, 152, 219, 1);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(52, 152, 219, 0);
+      }
+    }
+
+    .pulse-animation {
+      animation: pulse 2s ease;
+    }
+
+    body.dark-theme {
+      --bg-color: #222;
+      --btn-color: #e67e22;
+      color: white;
+    }
+
+    /* SVG heart container */
+    .svg-heart {
+      width: 200px;
+      height: 200px;
+    }
+
+    .svg-heart path {
+      fill: none;
+      stroke: red;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawHeart 20s ease forwards;
+    }
+
+    /* Draw animation */
+    @keyframes drawHeart {
+      to {
+        stroke-dashoffset: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Choose your theme</h1>
+
+<button id="theme"> Theme </button>
+
+<!-- SVG Heart Drawing -->
+<svg class="svg-heart" viewBox="0 0 32 29.6">
+  <path d="M23.6,0c-3.4,0-6.4,2.1-7.6,5.1C14.8,2.1,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.3,16,21.2,16,21.2s16-11.9,16-21.2
+    C32,3.8,28.2,0,23.6,0z"/>
+</svg>
+
+<script>
+  // Apply stored theme
+  function applyStoredTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    if (theme === 'dark') {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }
+
+  // Toggle theme and save preference
+  function toggleTheme() {
+    if (document.body.classList.contains('dark-theme')) {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Animate button pulse
+  function animateButton(button) {
+    button.classList.remove('pulse-animation');
+    void button.offsetWidth;
+    button.classList.add('pulse-animation');
+  }
+
+  const btn = document.getElementById('theme');
+  btn.addEventListener('click', () => {
+    toggleTheme();
+    animateButton(btn);
+  });
+
+  applyStoredTheme();
+</script>
+
+</body>
+</html>
